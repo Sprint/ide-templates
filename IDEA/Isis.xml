@@ -1,0 +1,45 @@
+<templateSet group="Isis">
+  <template name="prop" value="private $type$ $fieldName$;&#10;public $type$ get$getterName$() {&#10;    return $fieldName$;&#10;}&#10;public void set$getterName$($type$ $fieldName$) {&#10;    this.$fieldName$ = $fieldName$;&#10;}" description="Create field with getter and setter" toReformat="false" toShortenFQNames="true">
+    <variable name="type" expression="" defaultValue="&quot;String&quot;" alwaysStopAt="true" />
+    <variable name="fieldName" expression="" defaultValue="&quot;myField&quot;" alwaysStopAt="true" />
+    <variable name="getterName" expression="capitalize(fieldName)" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_CODE" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+      <option name="JAVA_EXPRESSION" value="true" />
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_COMMENT" value="true" />
+      <option name="JAVA_STRING" value="true" />
+      <option name="COMPLETION" value="true" />
+    </context>
+  </template>
+  <template name="domservice" value="import org.apache.isis.applib.DomainObjectContainer;&#10;import org.apache.isis.applib.annotation.DomainService;&#10;import org.apache.isis.applib.annotation.MemberOrder;&#10;import org.apache.isis.applib.annotation.ParameterLayout;&#10;&#10;@DomainService(menuOrder = &quot;1&quot;, repositoryFor = $domainObject$.class)&#10;public class $className$ {&#10;    &#10;    //region &gt; create (action)&#10;    @MemberOrder(sequence = &quot;1&quot;)&#10;    public $className$ create(&#10;            final @ParameterLayout(named=&quot;Name&quot;) String name) {&#10;        final $domainObject$ obj = container.newTransientInstance($domainObject$.class);&#10;        obj.setName(name);&#10;        container.persistIfNotAlready(obj);&#10;        return obj;&#10;    }&#10;&#10;    //endregion&#10;&#10;    //region &gt; injected services&#10;&#10;    @javax.inject.Inject&#10;    DomainObjectContainer container;&#10;&#10;    //endregion&#10;}&#10;" description="Creates a new DomainService class for a domain object" toReformat="false" toShortenFQNames="true">
+    <variable name="domainObject" expression="" defaultValue="" alwaysStopAt="false" />
+    <variable name="className" expression="" defaultValue="" alwaysStopAt="false" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+  <template name="domclass" value="import javax.jdo.annotations.IdentityType;&#10;import javax.jdo.annotations.VersionStrategy;&#10;import org.apache.isis.applib.DomainObjectContainer;&#10;import org.apache.isis.applib.annotation.Bookmarkable;&#10;import org.apache.isis.applib.annotation.MemberOrder;&#10;import org.apache.isis.applib.annotation.ObjectType;&#10;import org.apache.isis.applib.annotation.Title;&#10;import org.apache.isis.applib.util.ObjectContracts;&#10;&#10;@javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE)&#10;@javax.jdo.annotations.DatastoreIdentity(&#10;        strategy=javax.jdo.annotations.IdGeneratorStrategy.IDENTITY,&#10;         column=&quot;id&quot;)&#10;@javax.jdo.annotations.Version(&#10;        strategy=VersionStrategy.VERSION_NUMBER, &#10;        column=&quot;version&quot;)&#10;@javax.jdo.annotations.Unique(name=&quot;$classNameUpper$_NAME_UNQ&quot;, members = {&quot;$fieldName2$&quot;})&#10;@ObjectType(&quot;$classNameUpper$&quot;)&#10;@Bookmarkable&#10;public class $className$ implements Comparable&lt;$className$&gt; {&#10;&#10;    //region &gt; name (property)&#10;    private $fieldType$ $fieldName$;&#10;&#10;    @javax.jdo.annotations.Column(allowsNull=&quot;false&quot;)&#10;    @Title(sequence=&quot;1&quot;)&#10;    @MemberOrder(sequence=&quot;1&quot;)&#10;    public String get$fieldNameUpperCase$() {&#10;        return $fieldName$;&#10;    }&#10;&#10;    public void set$fieldNameUpperCase$(final $fieldType$ $fieldName$) {&#10;        this.$fieldName$ = $fieldName$;&#10;    }&#10;    //endregion&#10;    &#10;    $END$&#10;&#10;    //region &gt; compareTo&#10;    @Override&#10;    public int compareTo($className$ other) {&#10;        return ObjectContracts.compare(this, other, &quot;$fieldName$&quot;);&#10;    }&#10;    //endregion&#10;&#10;    //region &gt; injected services&#10;    @javax.inject.Inject&#10;    @SuppressWarnings(&quot;unused&quot;)&#10;    private DomainObjectContainer container;&#10;    //endregion&#10;&#10;}&#10;" description="Creates a persistable domain class" toReformat="false" toShortenFQNames="true">
+    <variable name="className" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="fieldType" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="fieldName" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="fieldNameUpperCase" expression="" defaultValue="capitalize(fieldName)" alwaysStopAt="false" />
+    <variable name="classNameUpper" expression="" defaultValue="capitalizeAndUnderscore(className)" alwaysStopAt="false" />
+    <variable name="fieldName2" expression="" defaultValue="fieldName" alwaysStopAt="false" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+  <template name="domprop" value="// region &gt; $capitalFieldName$ property&#10;private $type$ $fieldName$;    &#10;&#10;@Column(allowsNull=&quot;$allowNull$&quot;)&#10;@Title(sequence=&quot;$seq1$&quot;)&#10;@MemberOrder(sequence=&quot;$seq2$&quot;)&#10;public $type$ get$capitalFieldName$() {&#10;    return $fieldName$;&#10;}&#10;&#10;public void set$capitalFieldName$(final $type$ $fieldName$) {&#10;    this.$fieldName$ = $fieldName$;&#10;}&#10;//endregion" description="Creates a domain property" toReformat="false" toShortenFQNames="true">
+    <variable name="type" expression="" defaultValue="&quot;String&quot;" alwaysStopAt="true" />
+    <variable name="fieldName" expression="" defaultValue="&quot;myField&quot;" alwaysStopAt="true" />
+    <variable name="allowNull" expression="" defaultValue="&quot;false&quot;" alwaysStopAt="true" />
+    <variable name="seq1" expression="" defaultValue="&quot;1&quot;" alwaysStopAt="true" />
+    <variable name="seq2" expression="" defaultValue="&quot;1&quot;" alwaysStopAt="true" />
+    <variable name="capitalFieldName" expression="" defaultValue="capitalize(fieldName)" alwaysStopAt="false" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+</templateSet>
